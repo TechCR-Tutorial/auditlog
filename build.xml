@@ -1,0 +1,70 @@
+<project name="auditlog" basedir="." default="clean-build">
+
+    <property name="src.dir"     value="src"/>
+
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir"     value="lib"/>
+    <property name="dist.dir"     value="dist"/>
+    <property name="to.lib.dir"  value=""/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>        
+    </target>
+
+    <target name="compile" >
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+            <classpath>
+                <fileset dir="lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${build.dir}/classes">
+            <fileset dir="${src.dir}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <!-- <attribute name="Main-Class" value="${main-class}"/> -->
+            </manifest>
+        </jar>
+        <mkdir dir="${dist.dir}"/>
+        <copy file="${jar.dir}/${ant.project.name}.jar" todir="${dist.dir}" />
+    </target>
+
+    <target name="j_run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+
+    <target name="clean-build" depends="clean,jar"/>
+
+    <target name="main" depends="clean"/>
+
+    <path id="class.path">
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement path="${classes.dir}"/>
+    </path>
+
+    <!--
+     <target name="run">
+        <java classname="com.authvalidate.Excuter" classpathref="class.path" fork="true">
+        </java>
+    </target>
+    -->
+    
+    <target name="deploy" depends="clean-build">
+        <copy file="${jar.dir}/${ant.project.name}.jar" todir="${to.lib.dir}"/>
+    </target>
+
+</project>
