@@ -3,6 +3,12 @@
 This library for save changes made to entities through your application.
 This is developed using hibernate interceptors. So Hibernate is main requirement for apply this jar.
 
+DEPENDENCIES.
+javax.persistence.jar
+javax.servlet-3.0.jar
+hibernate-3.5.1.jar
+spring-2.5.6.SEC02.jar
+
 
 Create AUDIT_LOG table.
 
