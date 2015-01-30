@@ -1,10 +1,8 @@
-
-
 --READ ME FOR AUDIT LOG LIBRARY. --
 
 This library for save changes made to entities through your application.
 This is developed using hibernate interceptors. So Hibernate is main requirement for apply this jar.
-Also this is valid to table those use number as primary key.
+
 
 Create AUDIT_LOG table.
 
@@ -80,6 +78,23 @@ can exclude a field using this annotation.
 Also can give meaning full name to save in data base.
   Ex : suppose field name is fName and its need to save as FIRST NAME. then use
        @AuditLogField(displayName = "FIRST NAME")
+
+Also can give updated field for particular field.
+suppose every pojo class extended from one class and update field is in parent class, then can have
+one update field. can define in supper class.
+
+  Ex :  class A {
+            @AuditLogField(updatedBy = AuditLogField.DualStatus.YES)
+            String a;
+        }
+
+        Class B extends A {
+
+        }
+
+        Class C extends A {
+
+        }
 
 Find Updated User _______________
 
